@@ -2011,8 +2011,7 @@
 				(xyz 0 0 0)
 			)
 		)
-		(model "D:/KiCad/PD24_ctrl/PD24_ctrl.wrl"
-			(hide yes)
+		(model "../CONTROL/PD24_ctrl.wrl"
 			(offset
 				(xyz 5.5 -10.55 6)
 			)

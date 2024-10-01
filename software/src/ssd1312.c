@@ -131,12 +131,12 @@ uint8_t mabs(uint8_t x) {
 
 void ssd1312_drawLine(uint8_t x0, uint8_t y0, uint8_t x1, uint8_t y1, uint8_t t) {
 
-	uint8_t dx = mabs(x1 - x0), sx = x0 < x1 ? 1 : -1;
-	uint8_t dy = mabs(y1 - y0), sy = y0 < y1 ? 1 : -1;
-	uint8_t erro = (dx > dy ? dx : -dy) / 2;
+	int16_t dx = mabs(x1 - x0), sx = x0 < x1 ? 1 : -1;
+	int16_t dy = mabs(y1 - y0), sy = y0 < y1 ? 1 : -1;
+	int16_t erro = (dx > dy ? dx : -dy) / 2;
 
 	while(ssd1312_drawPixel(x0, y0, 1), x0 != x1 || y0 != y1){
-		uint8_t e2 = erro;
+		int16_t e2 = erro;
 		if(e2 > -dx) { erro -= dy; x0 += sx;}
 		if(e2 <  dy) { erro += dx; y0 += sy;}
 	}
@@ -214,7 +214,7 @@ void ssd1312_showchar(uint8_t x, uint8_t y, uint8_t num, const uint8_t* font, ui
  * @param newline 最大显示行数
  */
 void ssd1312_showstr(short x, short y, const char* str, const uint8_t str_len, const uint8_t* font, uint8_t w, uint8_t h, uint8_t spacing_x, int8_t newline) {
-	uint8_t ww = ((ssd1312_rotation == 0 || ssd1312_rotation == 2)? 128-w : 64-w);
+	uint8_t ww = ((ssd1312_rotation == 0 || ssd1312_rotation == 2)? 64-w : 128-w);
 	for (uint8_t i = 0; i < str_len; i++) {
 		// if (isnum(str[i]))
 		if (x >= -w && x <= ww) {

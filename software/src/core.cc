@@ -26,18 +26,46 @@ uint8_t str_len = 0;
 
 char uart_rx_buf[32];
 
-uint16_t key[4] = {0x00};
-bool key_flag[4] = {true, true, true};
+enum KEY_EVENT {
+	KEY_NONE = 0,
+	KEY_DOWN = 1,
+	KEY_UP = 2
+};
 
-bool key_pressed(uint8_t i) {
+uint16_t key[4] = {0x00};
+bool key_flag[4] = {true, true, true, true};
+
+// 一般来说按键扫描函数需要按照5kHz的频率对按键进行扫描
+void key_scan(void) {
+
+	key[1] = (key[1] << 1) | ((!read(KEY1))?0x01:0x00);
+	key[2] = (key[2] << 1) | ((!read(KEY2))?0x01:0x00);
+	key[3] = (key[3] << 1) | ((!read(KEY3))?0x01:0x00);
+}
+/**
+ * @brief 按键处理函数
+ * @param i 按键编号
+ * @return 0 无按键动作 1 按键按下 2 按键释放
+ *
+ * @note 该函数会自动处理按键的抖动
+ * @note 改函数还需要和按键扫描函数配合使用
+ */
+uint8_t key_push(uint8_t i) {
 	if (key[i] == 0xffff && key_flag[i]) {
 		key_flag[i] = false;
-		return true;
+		return 1;
 	} else if (key[i] == 0x0000 && !key_flag[i]) {
 		key_flag[i] = true;
+		return 2;
 	}
 
-	return false;
+	return 0;
+}
+bool key_pressed(uint8_t i) {
+	return key[i] == 0xffff;
+}
+bool key_released(uint8_t i) {
+	return key[i] == 0x0000;
 }
 
 
@@ -256,18 +284,9 @@ void ina226_sample(void) {
 }
 
 
-
-uint16_t returnmax(uint16_t* list, uint8_t len) {
-	uint16_t max = 0;
-	for (uint8_t i = 0; i < len; i++) {
-		if (list[i] > max) {
-			max = list[i];
-		}
-	}
-	return max;
-}
-uint16_t returnmin(uint16_t* list, uint8_t len) {
-	uint16_t min = 60000;
+template<class T>
+T returnmin(T* list, uint8_t len) {
+	T min = list[0];
 	for (uint8_t i = 0; i < len; i++) {
 		if (list[i] < min) {
 			min = list[i];
@@ -275,7 +294,16 @@ uint16_t returnmin(uint16_t* list, uint8_t len) {
 	}
 	return min;
 }
-
+template<class T>
+T returnmax(T* list, uint8_t len) {
+	T max = list[0];
+	for (uint8_t i = 0; i < len; i++) {
+		if (list[i] > max) {
+			max = list[i];
+		}
+	}
+	return max;
+}
 class STATUS_BAR {
 	uint16_t list[128] = {0};
 	int32_t sum = 0;
@@ -358,6 +386,43 @@ public:
 
 } power_bar;
 
+class FLOW_CHART {
+	float chart_data[128];
+	int index_of_data = 0;
+public:
+	float max, min;
+	void add_data(float data) {
+		chart_data[index_of_data] = data;
+		index_of_data = (index_of_data + 1) % 128;
+	}
+
+	void draw(void) {
+
+		ssd1312_drawLine(0, 8, 0, 64, 1);
+		ssd1312_drawLine(0, 63, 127, 63, 1);
+
+		max = returnmax(chart_data, 128);
+		min = returnmin(chart_data, 128);
+
+		for (int i = 0, i_ = index_of_data; i < 127; i++, i_ = (i_+1) % 128) {
+			if (((i+index_of_data)/8) % 2 == 1) {
+				for (int j = 0; j < 7; j++) {
+					ssd1312_drawPixel(i, 8*(j+1)+5, 1);
+				}
+			}
+
+			if (i > 1)
+			// 1. 点风格
+			ssd1312_drawPixel(i, 61-chart_data[i_]/max*58, 1);
+
+			// 2. 线风格  61-chart_data[(i_+1)%128]/max*40
+			// ssd1312_drawLine(i, 61-chart_data[i_]/max*40, i+1, 40, 1);
+
+			// 3. 矩形风格
+			// ssd1312_drawLine(i, 61-chart_data[i_]/max*40, i, 61, 1);
+		}
+	}
+} power_chart;
 
 // 浮点数显示
 void show_float(uint8_t x, uint8_t y, const float num) {
@@ -428,13 +493,14 @@ void meterUI(void) {
 	ssd1312_showchar(v_x+50, v_y+1, 0, char_V2, 9, 16);
 
 	// 电流
-	// str_len = sprintf(strbuf, "%f", current);
-	// HAL_UART_Transmit(&huart2, (uint8_t*)strbuf, str_len, 1000);
-	// current *= 1;
-	show_float(c_x, c_y, current);
-	// ssd1312_showchar(c_x+50, c_y+1, 0, char_A2, 9, 16);
-	ssd1312_showchar(c_x+50, c_y+1, 0, char_m, 6, 8);
-	ssd1312_showchar(c_x+50+6, c_y+1, 0, char_A, 6, 8);
+	if (current < 1000) {
+		show_float(c_x, c_y, current);
+		ssd1312_showchar(c_x+50, c_y+1, 0, char_m, 6, 8);
+		ssd1312_showchar(c_x+50+6, c_y+1, 0, char_A, 6, 8);
+	} else {
+		show_float(c_x, c_y, current/1000);
+		ssd1312_showchar(c_x+50, c_y+1, 0, char_A2, 9, 16);
+	}
 
 	// 功率
 	if (power < 10000) {
@@ -482,7 +548,88 @@ void meterUI(void) {
 
 }
 
-void meterUI2(void) {
+float chart_data[128];
+int index_of_data = 0;
+void meterUI_flowchart(void) {
+	int current_i = current, voltage_i = bus_voltage*1000, power_i = power;
+	str_len = sprintf(strbuf, "%d.%dV %d.%dA %d.%dW", voltage_i/1000, voltage_i%1000, current_i/1000, current_i%1000, power_i/1000, power_i%1000);
+	ssd1312_showstr(0, 0, strbuf, str_len, font_0507, 5, 7, 1, 1);
+	int min_power = power_chart.min;
+	int max_power = power_chart.max;
+	str_len = sprintf(strbuf, "max:%d.%d min:%d.%d", max_power/1000, max_power%1000, min_power/1000, min_power%1000);
+	ssd1312_showstr(0, 1, strbuf, str_len, font_0507, 5, 7, 1, 1);
+
+
+	// power_chart.add_data(power);
+	power_chart.draw();
+
+}
+
+void meterUI_pd_info(void) {
+
+
+	uint8_t status0 = husb238_readReg(HUSB238_PD_STATUS0);
+	uint8_t pdo_5v = husb238_readReg(HUSB238_SRC_PDO_5V);
+	uint8_t pdo_9v = husb238_readReg(HUSB238_SRC_PDO_9V);
+	uint8_t pdo_12v = husb238_readReg(HUSB238_SRC_PDO_12V);
+	uint8_t pdo_15v = husb238_readReg(HUSB238_SRC_PDO_15V);
+	uint8_t pdo_18v = husb238_readReg(HUSB238_SRC_PDO_18V);
+	uint8_t pdo_20v = husb238_readReg(HUSB238_SRC_PDO_20V);
+
+	int now_current = PD_SRC_CURRENT[status0&0x0f];
+	// int now_voltage = PD_SRC_VOLTAGE[status0>>4];
+	str_len = sprintf(strbuf, "NOW_PD:");
+	ssd1312_showstr(0, 0, strbuf, str_len, font_0507, 5, 7, 1, 1);
+	str_len = sprintf(strbuf, "%dV, %d.%dA", PD_SRC_VOLTAGE[status0>>4]/1000, now_current/1000, now_current%1000);
+	ssd1312_showstr(0, 1, strbuf, str_len, font_0507, 5, 7, 1, 1);
+
+	if (pdo_5v & 0x80) {
+		int current = PD_SRC_CURRENT[pdo_5v&0x0f];
+		str_len = sprintf(strbuf, "5V:%d.%dA", current/1000, current%1000);
+		ssd1312_showstr(0, 2, strbuf, str_len, font_0507, 5, 7, 1, 1);
+	} else {
+		ssd1312_showstr(0, 2, "5V:NULL", 7, font_0507, 5, 7, 1, 1);
+	}
+
+	if (pdo_9v & 0x80) {
+		int current = PD_SRC_CURRENT[pdo_9v&0x0f];
+		str_len = sprintf(strbuf, "9V:%d.%dA", current/1000, current%1000);
+		ssd1312_showstr(0, 3, strbuf, str_len, font_0507, 5, 7, 1, 1);
+	} else {
+		ssd1312_showstr(0, 3, "9V:NULL", 7, font_0507, 5, 7, 1, 1);
+	}
+
+	if (pdo_12v & 0x80) {
+		int current = PD_SRC_CURRENT[pdo_12v&0x0f];
+		str_len = sprintf(strbuf, "12V:%d.%dA", current/1000, current%1000);
+		ssd1312_showstr(0, 4, strbuf, str_len, font_0507, 5, 7, 1, 1);
+	} else {
+		ssd1312_showstr(0, 4, "12V:NULL", 8, font_0507, 5, 7, 1, 1);
+	}
+
+	if (pdo_15v & 0x80) {
+		int current = PD_SRC_CURRENT[pdo_15v&0x0f];
+		str_len = sprintf(strbuf, "15V:%d.%dA", current/1000, current%1000);
+		ssd1312_showstr(0, 5, strbuf, str_len, font_0507, 5, 7, 1, 1);
+	} else {
+		ssd1312_showstr(0, 5, "15V:NULL", 8, font_0507, 5, 7, 1, 1);
+	}
+
+	if (pdo_18v & 0x80) {
+		int current = PD_SRC_CURRENT[pdo_18v&0x0f];
+		str_len = sprintf(strbuf, "18V:%d.%dA", current/1000, current%1000);
+		ssd1312_showstr(0, 6, strbuf, str_len, font_0507, 5, 7, 1, 1);
+	} else {
+		ssd1312_showstr(0, 6, "18V:NULL", 8, font_0507, 5, 7, 1, 1);
+	}
+
+	if (pdo_20v & 0x80) {
+		int current = PD_SRC_CURRENT[pdo_20v&0x0f];
+		str_len = sprintf(strbuf, "20V:%d.%dA", current/1000, current%1000);
+		ssd1312_showstr(0, 7, strbuf, str_len, font_0507, 5, 7, 1, 1);
+	} else {
+		ssd1312_showstr(0, 7, "20V:NULL", 8, font_0507, 5, 7, 1, 1);
+	}
 
 }
 
@@ -527,6 +674,9 @@ uint8_t lis2dw12_orientation(void) {
 }
 
 	uint8_t tx = LIS2DW12_CTRL1, rx = 0;
+
+uint8_t scene = 0;
+
 void core(void) {
 
 	// HAL_TIM_Base_Start(&htim3);
@@ -568,9 +718,24 @@ void core(void) {
 	// 	rx = lis2dw12_readReg(LIS2DW12_WHO_AM_I);
 	// 	HAL_Delay(10);
 	// }
+
+	husb238_writeReg(HUSB238_GO_COMMAND, HUSB238_COMMAND_GET_SRC_CAP);
 	uint8_t voltage_select = 5;
 
 	while (1) {
+
+		// 读取加速度计数据旋转屏幕显示方向
+		ssd1312_setRotation(lis2dw12_orientation());
+		// 组合键手动切换屏幕显示方向
+		if (key_pressed(2) && key_push(1) == KEY_UP) {
+			ssd1312_rotation = (ssd1312_rotation + 1) % 4;
+			ssd1312_setRotation(ssd1312_rotation);
+		}
+		// 组合键控制电压诱骗输出
+		if (key_pressed(2) && key_push(3) == KEY_UP) {
+			voltage_select = (voltage_select + 1) % 6;
+		}
+
 
 		switch (voltage_select) {
 			case 0: pd_control(5); break;
@@ -582,15 +747,6 @@ void core(void) {
 			default: break;
 		}
 
-
-		ssd1312_setRotation(lis2dw12_orientation());
-		if ((key[2] == 0xffff && key_pressed(1))) {
-			ssd1312_rotation = (ssd1312_rotation + 1) % 4;
-			ssd1312_setRotation(ssd1312_rotation);
-		}
-		if ((key[2] == 0xffff && key_pressed(3))) {
-			voltage_select = (voltage_select + 1) % 6;
-		}
 	// rx = lis2dw12_readReg(LIS2DW12_CTRL1);
 	// lis2dw12_writeReg(LIS2DW12_CTRL1, 0x77);
 	// if (rx == 0x44) {
@@ -606,12 +762,32 @@ void core(void) {
 
 		// 清空oled屏幕缓存
 		ssd1312_clear();
-
-		// ssd1312_drawLine(0, 0, 127, 32, 0xff);
 		// 绘制UI
-		meterUI();
+		switch (scene) {
+			case 0: {
+				if (key_push(2) == 2) {
+					scene = 1;
+				}
+				meterUI();
+			} break;
+			case 1: {
+				if (key_push(2) == 2) {
+					scene = 2;
+				}
+				meterUI_flowchart();
+			} break;
+			case 2: {
+				if (key_push(2) == 2) {
+					scene = 0;
+				}
+				meterUI_pd_info();
+			} break;
+			default: scene = 0; break;
+		}
+		// ssd1312_drawLine(0, 0, 127, 32, 0xff);
 		str_len = sprintf(strbuf, "0x%02x", rx);
 		ssd1312_showstr(0, 14, strbuf, str_len, font_0507, 5, 7, 1, 2);
+
 		// 刷新屏幕
 		ssd1312_sendBuffer();
 
@@ -623,13 +799,12 @@ void core(void) {
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
 	if (htim->Instance == TIM16) {
 		// 按键扫描
-		key[1] = (key[1] << 1) | ((!read(KEY1))?0x01:0x00);
-		key[2] = (key[2] << 1) | ((!read(KEY2))?0x01:0x00);
-		key[3] = (key[3] << 1) | ((!read(KEY3))?0x01:0x00);
+		key_scan();
 	} else if (htim->Instance == TIM17) {
 		ina226_sample();
 		power_sum += power*0.00005;
 		power_bar.calc(power_raw);
+		power_chart.add_data(power);
 	}
 }
 

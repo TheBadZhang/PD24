@@ -71,192 +71,6 @@ bool key_released(uint8_t i) {
 }
 
 
-
-
-
-void delay_1ms(void) {
-	HAL_Delay(1);
-}
-/*
-uint8_t lis2dw12_readReg_soft(uint8_t reg) {
-	uint8_t data = 0;
-	// bit0 = 1, read
-	reg |= 0x80;
-	clr(SPI_CS);
-	delay_1ms();
-	for (int i = 0; i < 8; i++) {
-		clr(SPI_CLK);
-		if (reg & 0x80) {
-			set(SPI_MOSI);
-		} else {
-			clr(SPI_MOSI);
-		}
-		reg <<= 1;
-	delay_1ms();
-		set(SPI_CLK);
-	}
-	delay_1ms();
-	for (int i = 0; i < 8; i++) {
-		clr(SPI_CLK);
-		clr(SPI_MOSI);
-		data <<= 1;
-		if (read(SPI_MISO)) {
-			data |= 0x01;
-		}
-		delay_1ms();
-		set(SPI_CLK);
-	}
-	delay_1ms();
-	set(SPI_CS);
-
-	return data;
-}
-
-void lis2dw12_writeReg_soft(uint8_t reg, uint8_t value) {
-	reg &= 0x7f;
-	clr(SPI_CS);
-	delay_1ms();
-	for (int i = 0; i < 8; i++) {
-		clr(SPI_CLK);
-		if (reg & 0x80) {
-			set(SPI_MOSI);
-		} else {
-			clr(SPI_MOSI);
-		}
-		reg <<= 1;
-		delay_1ms();
-		set(SPI_CLK);
-	}
-	delay_1ms();
-	for (int i = 0; i < 8; i++) {
-		clr(SPI_CLK);
-		if (value & 0x80) {
-			set(SPI_MOSI);
-		} else {
-			clr(SPI_MOSI);
-		}
-		value <<= 1;
-		delay_1ms();
-		set(SPI_CLK);
-	}
-	delay_1ms();
-	set(SPI_CS);
-}
-*/
-/*
-void iic_soft_out(void) {
-	GPIO_InitTypeDef SOFT_IIC_GPIO_STRUCT;
-	SOFT_IIC_GPIO_STRUCT.Mode = GPIO_MODE_OUTPUT_OD;
-	SOFT_IIC_GPIO_STRUCT.Pin = SDA_Pin;
-	SOFT_IIC_GPIO_STRUCT.Speed = GPIO_SPEED_FREQ_HIGH;
-	SOFT_IIC_GPIO_STRUCT.Pull = GPIO_PULLUP;
-
-	HAL_GPIO_Init(SDA_GPIO_Port, &SOFT_IIC_GPIO_STRUCT);
-}
-
-void iic_soft_in(void) {
-	GPIO_InitTypeDef SOFT_IIC_GPIO_STRUCT;
-	SOFT_IIC_GPIO_STRUCT.Mode = GPIO_MODE_INPUT;
-	SOFT_IIC_GPIO_STRUCT.Pin = SDA_Pin;
-	SOFT_IIC_GPIO_STRUCT.Speed = GPIO_SPEED_FREQ_HIGH;
-	SOFT_IIC_GPIO_STRUCT.Pull = GPIO_PULLUP;
-
-	HAL_GPIO_Init(SDA_GPIO_Port, &SOFT_IIC_GPIO_STRUCT);
-}
-
-void iic_start(void) {
-	iic_soft_out();
-	set(SDA);
-	set(SCK);
-	delay_1ms();
-	clr(SDA);
-	delay_1ms();
-	clr(SCK);
-	delay_1ms();
-}
-
-void iic_end(void) {
-	iic_soft_out();
-	clr(SDA);
-	delay_1ms();
-	set(SCK);
-	delay_1ms();
-	set(SDA);
-	delay_1ms();
-}
-
-void iic_writeByte_soft(uint8_t data) {
-	for (int i = 0; i < 8; i++) {
-		if (data & 0x80) {
-			set(SDA);
-		} else {
-			clr(SDA);
-		}
-		data <<= 1;
-		delay_1ms();
-		set(SCK);
-		delay_1ms();
-		clr(SCK);
-	}
-}
-
-uint8_t iic_readByte_soft(void) {
-	uint8_t data = 0;
-	iic_soft_in();
-	for (int i = 0; i < 8; i++) {
-		data <<= 1;
-		set(SCK);
-		delay_1ms();
-		if (read(SDA)) {
-			data |= 0x01;
-		}
-		clr(SCK);
-		delay_1ms();
-	}
-	return data;
-}
-void wait_ack(void) {
-	iic_soft_in();
-	// set(SDA);
-	// delay_1ms();
-	set(SCK);
-	delay_1ms();
-	// while (read(SDA)) {
-	// }
-	clr(SCK);
-	delay_1ms();
-}
-
-void write_ack(void) {
-	iic_soft_out();
-	clr(SDA);
-	delay_1ms();
-	set(SCK);
-	delay_1ms();
-	clr(SCK);
-	delay_1ms();
-}
-
-uint8_t lis2dw12_readReg_iic_soft(uint8_t address, uint8_t reg) {
-	uint8_t data = 0;
-	address |= 0x01;  // iic 读
-	iic_start();
-
-	iic_writeByte_soft(address);
-	wait_ack();
-	iic_writeByte_soft(reg);
-	wait_ack();
-
-	data = iic_readByte_soft();
-	write_ack();
-
-	iic_end();
-
-	return data;
-}
-*/
-
-
 //***********INA226数据处理*************//
 float bus_voltage;
 int16_t current_raw;
@@ -546,7 +360,7 @@ void meterUI(void) {
 			}
 		}
 
-		// ssd1312_showchar(0, 12, 0, usbmeter2, 64, 16);
+		ssd1312_showchar(0, 12, 0, usbmeter2, 64, 16);
 	}
 
 	// 功率条（当前功率与近一段时间平均功率比值）
@@ -728,9 +542,6 @@ uint8_t scene = 0;
 
 void core(void) {
 
-	// HAL_TIM_Base_Start(&htim3);
-	// HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_3);
-
 	// 开启定时器中断
 	HAL_TIM_Base_Start_IT(&htim16);
 	HAL_TIM_Base_Start_IT(&htim17);
@@ -742,31 +553,18 @@ void core(void) {
 	// 初始化oled
 	ssd1312_init(0);
 
-
-	// set(SPI_CS);
-	// set(SPI_CLK);
-	// set(SPI_MOSI);
-	// set(CS);
-	// set(SDA);
-	// set(SCK);
-	// clr(SA0);
-
+	// 等待 lis2dw12 完成上电初始化
 	HAL_Delay(20);
 	lis2dw12_init();
 	// lis2dw12_single_tap_init();
 	lis2dw12_double_tap_init();
-	// // lis2dw12_writeReg_soft(LIS2DW12_CTRL1, 0x77);
-	// HAL_Delay(10);
-	// // if (lis2dw12_single_tap_event_status()) {
-	// // 	single_tap = true;
-	// // 	pic_flag = !pic_flag;
-	// // }
-	// HAL_Delay(10);
+
+	// 判断 lis2dw12 能否正常通信
 	rx = lis2dw12_readReg(LIS2DW12_WHO_AM_I);
-	// while (rx != 0x44) {
-	// 	rx = lis2dw12_readReg(LIS2DW12_WHO_AM_I);
-	// 	HAL_Delay(10);
-	// }
+	while (rx != 0x44) {
+		rx = lis2dw12_readReg(LIS2DW12_WHO_AM_I);
+		HAL_Delay(10);
+	}
 
 	husb238_writeReg(HUSB238_GO_COMMAND, HUSB238_COMMAND_GET_SRC_CAP);
 	uint8_t voltage_select = 5;
@@ -775,6 +573,11 @@ void core(void) {
 
 		// 读取加速度计数据旋转屏幕显示方向
 		ssd1312_setRotation(lis2dw12_orientation());
+		// 读取加速度计数据，判断是否存在双击事件，存在则清空功率累计
+		if (lis2dw12_readReg(LIS2DW12_TAP_SRC) & 0x10) {
+			power_sum = 0;
+		}
+
 		// 组合键手动切换屏幕显示方向
 		if (key_pressed(2) && key_push(1) == KEY_UP) {
 			ssd1312_rotation = (ssd1312_rotation + 1) % 4;
@@ -785,7 +588,7 @@ void core(void) {
 			voltage_select = (voltage_select + 1) % 6;
 		}
 
-
+		// 根据选择的电压诱骗不同的挡位
 		switch (voltage_select) {
 			case 0: pd_control(5); break;
 			case 1: pd_control(9); break;
@@ -794,19 +597,6 @@ void core(void) {
 			case 4: pd_control(18); break;
 			case 5: pd_control(20); break;
 			default: break;
-		}
-
-	// rx = lis2dw12_readReg(LIS2DW12_CTRL1);
-	// lis2dw12_writeReg(LIS2DW12_CTRL1, 0x77);
-	// if (rx == 0x44) {
-	// 	ssd1312_rotation = (ssd1312_rotation + 1) % 4;
-	// 	ssd1312_setRotation(ssd1312_rotation);
-	// }
-		// if (lis2dw12_single_tap_event_status()) {
-		// 	rx++;
-		// }
-		if (lis2dw12_readReg(LIS2DW12_TAP_SRC) & 0x10) {
-			power_sum = 0;
 		}
 
 		// 清空oled屏幕缓存
@@ -840,15 +630,15 @@ void core(void) {
 			default: scene = 0; break;
 		}
 		// ssd1312_drawLine(0, 0, 127, 32, 0xff);
-		str_len = sprintf(strbuf, "0x%02x", rx);
-		ssd1312_setFont(font_0507, 5, 7, 1, 2);
-		ssd1312_showstr(0, 14, strbuf, str_len);
+		// ssd1312_setFont(font_0507, 5, 7, 1, 2);
+		// str_len = sprintf(strbuf, "only can be seen at specific situation");
+		// ssd1312_showstr(0, 14, strbuf, str_len);
 
 		// 刷新屏幕
 		ssd1312_sendBuffer();
 
 
-		HAL_Delay(50);
+		HAL_Delay(33);
 	}
 }
 
@@ -946,7 +736,6 @@ void lis2dw12_writeReg(uint8_t reg, uint8_t value) {
 	set(CS);
 }
 
-// void lis2d12_writeRegs
 
 uint8_t lis2dw12_readReg(uint8_t reg) {
 	uint8_t data = 0;
@@ -956,11 +745,5 @@ uint8_t lis2dw12_readReg(uint8_t reg) {
 	HAL_SPI_Transmit(&hspi1, &reg, 1, 1000);
 	HAL_SPI_Receive(&hspi1, &data, 1, 1000);
 	set(CS);
-	// HAL_SPI_TransmitReceive(&hspi1, &reg, &data, 1, 1000);
 	return data;
-	// if (HAL_SPI_TransmitReceive(&hspi1, &reg, &data, 1, 1000) == HAL_OK) {
-	// 	return data;
-	// } else {
-	// 	return 0x80;
-	// }
 }

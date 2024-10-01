@@ -4,3 +4,14 @@
 **/*-backups/**
 **/*.SLDASM
 **/*.SLDPRT
+
+
+software/Core/**
+software/Drivers/**
+software/.eide/**
+software/.vscode/**
+software/.clang-format
+software/.mxproject
+software/Makefile
+software/startup_stm32g031xx.s
+software/STM32G031G8Ux_FLASH.ld

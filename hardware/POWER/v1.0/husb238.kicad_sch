@@ -1401,13 +1401,13 @@
 	)
 	(symbol
 		(lib_id "Transistor_FET:CSD25402Q3A")
-		(at 152.4 69.85 90)
+		(at 152.4 69.85 270)
+		(mirror x)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(fields_autoplaced yes)
 		(uuid "1b7ada75-5449-4f0d-8ae5-1c770e4d2d1c")
 		(property "Reference" "U3"
 			(at 152.4 60.96 90)
@@ -1426,7 +1426,7 @@
 			)
 		)
 		(property "Footprint" "Package_SON:VSON-8_3.3x3.3mm_P0.65mm_NexFET"
-			(at 157.099 39.497 0)
+			(at 147.701 39.497 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1435,7 +1435,7 @@
 			)
 		)
 		(property "Datasheet" "https://www.ti.com/lit/ds/symlink/csd25402q3a.pdf"
-			(at 154.813 38.735 0)
+			(at 149.987 38.735 0)
 			(effects
 				(font
 					(size 1.27 1.27)

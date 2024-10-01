@@ -26,6 +26,8 @@ uint8_t str_len = 0;
 
 char uart_rx_buf[32];
 
+
+//***********按键处理*************//
 enum KEY_EVENT {
 	KEY_NONE = 0,
 	KEY_DOWN = 1,
@@ -254,10 +256,8 @@ uint8_t lis2dw12_readReg_iic_soft(uint8_t address, uint8_t reg) {
 }
 */
 
-bool single_tap = false;
 
-bool pic_flag = false;
-
+//***********INA226数据处理*************//
 float bus_voltage;
 int16_t current_raw;
 float current;
@@ -304,6 +304,10 @@ T returnmax(T* list, uint8_t len) {
 	}
 	return max;
 }
+
+
+
+//***********几个独立的数据信息处理*************//
 class STATUS_BAR {
 	uint16_t list[128] = {0};
 	int32_t sum = 0;
@@ -405,7 +409,7 @@ public:
 		min = returnmin(chart_data, 128);
 
 		for (int i = 0, i_ = index_of_data; i < 127; i++, i_ = (i_+1) % 128) {
-			if (((i+index_of_data)/8) % 2 == 1) {
+			if (((i+index_of_data)) % 8 == 1) {
 				for (int j = 0; j < 7; j++) {
 					ssd1312_drawPixel(i, 8*(j+1)+5, 1);
 				}
@@ -413,10 +417,10 @@ public:
 
 			if (i > 1)
 			// 1. 点风格
-			ssd1312_drawPixel(i, 61-chart_data[i_]/max*58, 1);
+			// ssd1312_drawPixel(i, 61-chart_data[i_]/max*58, 1);
 
-			// 2. 线风格  61-chart_data[(i_+1)%128]/max*40
-			// ssd1312_drawLine(i, 61-chart_data[i_]/max*40, i+1, 40, 1);
+			// 2. 线风格
+			ssd1312_drawLine(i, 61-(chart_data[i_]-min)/(max-min)*40, i+1, 61-(chart_data[(i_+1)%128]-min)/(max-min)*40, 1);
 
 			// 3. 矩形风格
 			// ssd1312_drawLine(i, 61-chart_data[i_]/max*40, i, 61, 1);
@@ -424,6 +428,7 @@ public:
 	}
 } power_chart;
 
+// 链接器选项 -u _printf_float
 // 浮点数显示
 void show_float(uint8_t x, uint8_t y, const float num) {
 	// 位数控制，保证显示的数字个数为4个
@@ -523,9 +528,10 @@ void meterUI(void) {
 	if (ssd1312_rotation == 0 || ssd1312_rotation == 2) {
 		str_len = sprintf(strbuf, "THIS IS A SO FUCKING LONG SCENTANCE THAT CANNOT DISPLAY NORMALLY!!");
 		int8_t lines = 2;
-		// ssd1312_showstr(str_x, 12, strbuf, 0, font_Fixedsys, 8, 16, 1, 2);
-		// ssd1312_showstr(str_x, 12, strbuf, 0, font0816, 8, 16, 1, 2);
-		ssd1312_showstr(str_x, 12, strbuf, str_len, font_0507, 5, 7, 1, 2);
+		// ssd1312_setFont(font_Fixedsys, 8, 16, 1, 2);
+		// ssd1312_setFont(font0816, 8, 16, 1, 2);
+		ssd1312_setFont(font_0507, 5, 7, 1, 2);
+		ssd1312_showstr(str_x, 12, strbuf, str_len);
 		if (str_reverse) {
 			if (str_x >= 0) {
 				str_reverse = false;
@@ -551,13 +557,16 @@ void meterUI(void) {
 float chart_data[128];
 int index_of_data = 0;
 void meterUI_flowchart(void) {
+
+	ssd1312_setFont(font_0507, 5, 7, 1, 1);
+
 	int current_i = current, voltage_i = bus_voltage*1000, power_i = power;
 	str_len = sprintf(strbuf, "%d.%dV %d.%dA %d.%dW", voltage_i/1000, voltage_i%1000, current_i/1000, current_i%1000, power_i/1000, power_i%1000);
-	ssd1312_showstr(0, 0, strbuf, str_len, font_0507, 5, 7, 1, 1);
+	ssd1312_showstr(0, 0, strbuf, str_len);
 	int min_power = power_chart.min;
 	int max_power = power_chart.max;
 	str_len = sprintf(strbuf, "max:%d.%d min:%d.%d", max_power/1000, max_power%1000, min_power/1000, min_power%1000);
-	ssd1312_showstr(0, 1, strbuf, str_len, font_0507, 5, 7, 1, 1);
+	ssd1312_showstr(0, 1, strbuf, str_len);
 
 
 	// power_chart.add_data(power);
@@ -569,8 +578,8 @@ void meterUI_pd_info(void) {
 
 
 	uint8_t status0 = husb238_readReg(HUSB238_PD_STATUS0);
-	uint8_t pdo_5v = husb238_readReg(HUSB238_SRC_PDO_5V);
-	uint8_t pdo_9v = husb238_readReg(HUSB238_SRC_PDO_9V);
+	uint8_t pdo_5v  = husb238_readReg(HUSB238_SRC_PDO_5V);
+	uint8_t pdo_9v  = husb238_readReg(HUSB238_SRC_PDO_9V);
 	uint8_t pdo_12v = husb238_readReg(HUSB238_SRC_PDO_12V);
 	uint8_t pdo_15v = husb238_readReg(HUSB238_SRC_PDO_15V);
 	uint8_t pdo_18v = husb238_readReg(HUSB238_SRC_PDO_18V);
@@ -578,61 +587,100 @@ void meterUI_pd_info(void) {
 
 	int now_current = PD_SRC_CURRENT[status0&0x0f];
 	// int now_voltage = PD_SRC_VOLTAGE[status0>>4];
-	str_len = sprintf(strbuf, "NOW_PD:");
-	ssd1312_showstr(0, 0, strbuf, str_len, font_0507, 5, 7, 1, 1);
-	str_len = sprintf(strbuf, "%dV, %d.%dA", PD_SRC_VOLTAGE[status0>>4]/1000, now_current/1000, now_current%1000);
-	ssd1312_showstr(0, 1, strbuf, str_len, font_0507, 5, 7, 1, 1);
+	str_len = sprintf(strbuf, "NOW_PD:%dV, %d.%dA", PD_SRC_VOLTAGE[status0>>4]/1000, now_current/1000, now_current%1000);
+	ssd1312_setFont(font_0507, 5, 7, 1, 2);
+	ssd1312_showstr(0, 0, strbuf, str_len);
+
+	ssd1312_setFont(font_0507, 5, 7, 1, 1);
 
 	if (pdo_5v & 0x80) {
 		int current = PD_SRC_CURRENT[pdo_5v&0x0f];
 		str_len = sprintf(strbuf, "5V:%d.%dA", current/1000, current%1000);
-		ssd1312_showstr(0, 2, strbuf, str_len, font_0507, 5, 7, 1, 1);
+		ssd1312_showstr(0, 2, strbuf, str_len);
 	} else {
-		ssd1312_showstr(0, 2, "5V:NULL", 7, font_0507, 5, 7, 1, 1);
+		ssd1312_showstr(0, 2, "5V:NULL", 7);
 	}
 
 	if (pdo_9v & 0x80) {
 		int current = PD_SRC_CURRENT[pdo_9v&0x0f];
 		str_len = sprintf(strbuf, "9V:%d.%dA", current/1000, current%1000);
-		ssd1312_showstr(0, 3, strbuf, str_len, font_0507, 5, 7, 1, 1);
+		ssd1312_showstr(0, 3, strbuf, str_len);
 	} else {
-		ssd1312_showstr(0, 3, "9V:NULL", 7, font_0507, 5, 7, 1, 1);
+		ssd1312_showstr(0, 3, "9V:NULL", 7);
 	}
 
 	if (pdo_12v & 0x80) {
 		int current = PD_SRC_CURRENT[pdo_12v&0x0f];
 		str_len = sprintf(strbuf, "12V:%d.%dA", current/1000, current%1000);
-		ssd1312_showstr(0, 4, strbuf, str_len, font_0507, 5, 7, 1, 1);
+		ssd1312_showstr(0, 4, strbuf, str_len);
 	} else {
-		ssd1312_showstr(0, 4, "12V:NULL", 8, font_0507, 5, 7, 1, 1);
+		ssd1312_showstr(0, 4, "12V:NULL", 8);
 	}
 
 	if (pdo_15v & 0x80) {
 		int current = PD_SRC_CURRENT[pdo_15v&0x0f];
 		str_len = sprintf(strbuf, "15V:%d.%dA", current/1000, current%1000);
-		ssd1312_showstr(0, 5, strbuf, str_len, font_0507, 5, 7, 1, 1);
+		ssd1312_showstr(0, 5, strbuf, str_len);
 	} else {
-		ssd1312_showstr(0, 5, "15V:NULL", 8, font_0507, 5, 7, 1, 1);
+		ssd1312_showstr(0, 5, "15V:NULL", 8);
 	}
 
 	if (pdo_18v & 0x80) {
 		int current = PD_SRC_CURRENT[pdo_18v&0x0f];
 		str_len = sprintf(strbuf, "18V:%d.%dA", current/1000, current%1000);
-		ssd1312_showstr(0, 6, strbuf, str_len, font_0507, 5, 7, 1, 1);
+		ssd1312_showstr(0, 6, strbuf, str_len);
 	} else {
-		ssd1312_showstr(0, 6, "18V:NULL", 8, font_0507, 5, 7, 1, 1);
+		ssd1312_showstr(0, 6, "18V:NULL", 8);
 	}
 
 	if (pdo_20v & 0x80) {
 		int current = PD_SRC_CURRENT[pdo_20v&0x0f];
 		str_len = sprintf(strbuf, "20V:%d.%dA", current/1000, current%1000);
-		ssd1312_showstr(0, 7, strbuf, str_len, font_0507, 5, 7, 1, 1);
+		ssd1312_showstr(0, 7, strbuf, str_len);
 	} else {
-		ssd1312_showstr(0, 7, "20V:NULL", 8, font_0507, 5, 7, 1, 1);
+		ssd1312_showstr(0, 7, "20V:NULL", 8);
 	}
 
 }
 
+void ui_lis2dw12(void) {
+
+	ssd1312_setFont(font0608, 6, 8, 1, 1);
+
+	// LIS2DW12 三轴加速度计ID
+	str_len = sprintf(strbuf, "LIS2DW12: %x", lis2dw12_readReg(LIS2DW12_WHO_AM_I));
+	ssd1312_showstr(0, 0, strbuf, str_len);
+
+
+	// LIS2DW12 三轴加速度计数据
+	str_len = sprintf(strbuf, "X: %d", lis2dw12_readX());
+	ssd1312_showstr(0, 1, strbuf, str_len);
+	str_len = sprintf(strbuf, "Y: %d", lis2dw12_readY());
+	ssd1312_showstr(0, 2, strbuf, str_len);
+	str_len = sprintf(strbuf, "Z: %d", lis2dw12_readZ());
+	ssd1312_showstr(0, 3, strbuf, str_len);
+
+
+	// LIS2DW12 温度传感器（两种分辨率）
+	str_len = sprintf(strbuf, "TEMP1: %d", lis2dw12_readTemprature8bit()+25);
+	ssd1312_showstr(0, 4, strbuf, str_len);
+	int t = 100*(lis2dw12_readTemprature()/16.0+25);
+	str_len = sprintf(strbuf, "TEMP2: %d.%d", t/100, t%100);
+	// str_len = sprintf(strbuf, "TEMP1: %d", lis2dw12_readTemprature());
+	ssd1312_showstr(0, 5, strbuf, str_len);
+
+
+	// STM32G030 内部温度传感器
+	HAL_ADC_Start(&hadc1);	//启动ADC转换
+	HAL_ADC_PollForConversion(&hadc1,10);	//等待转换完成，10ms表示超时时间
+	uint16_t AD_Value = HAL_ADC_GetValue(&hadc1);	//读取ADC转换数据（12位数据）
+	uint16_t TS_CAL1 = *(__IO uint16_t *)(0x1FFF75A8);
+	float Temperature = (30.0f) / (TS_CAL1) * ((float) AD_Value - TS_CAL1) + 30.0f;
+	int t_i = Temperature*100;
+	str_len = sprintf(strbuf, "TEMP3: %d.%d", t_i/100, t_i%100);
+	ssd1312_setFont(font_0507, 5, 7, 1, 2);
+	ssd1312_showstr(0, 6, strbuf, str_len);
+}
 // 电源控制
 /**
  * @brief HUSB238 IIC 控制电压输出
@@ -654,8 +702,9 @@ void pd_control (uint8_t voltage) {
 	}
 }
 
+//***********加速度计处理*************//
 uint8_t lis2dw12_orientation(void) {
-	static uint8_t orientation = 0;
+	static uint8_t orientation = 1;
 	uint8_t rx;
 	rx = lis2dw12_readReg(LIS2DW12_OUT_X_H);
 	if ((rx&0xf0) == 0x30) {
@@ -673,7 +722,7 @@ uint8_t lis2dw12_orientation(void) {
 	return orientation;
 }
 
-	uint8_t tx = LIS2DW12_CTRL1, rx = 0;
+uint8_t tx = LIS2DW12_CTRL1, rx = 0;
 
 uint8_t scene = 0;
 
@@ -691,7 +740,7 @@ void core(void) {
 	ina226_init(INA226_AVG_16 | INA226_VBUS_2116uS | INA226_VSH_2116uS | INA226_MODE_CONT_SHUNT_AND_BUS, 20, 2500);
 
 	// 初始化oled
-	ssd1312_init(2);
+	ssd1312_init(0);
 
 
 	// set(SPI_CS);
@@ -778,15 +827,22 @@ void core(void) {
 			} break;
 			case 2: {
 				if (key_push(2) == 2) {
-					scene = 0;
+					scene = 3;
 				}
 				meterUI_pd_info();
+			} break;
+			case 3: {
+				if (key_push(2) == 2) {
+					scene = 0;
+				}
+				ui_lis2dw12();
 			} break;
 			default: scene = 0; break;
 		}
 		// ssd1312_drawLine(0, 0, 127, 32, 0xff);
 		str_len = sprintf(strbuf, "0x%02x", rx);
-		ssd1312_showstr(0, 14, strbuf, str_len, font_0507, 5, 7, 1, 2);
+		ssd1312_setFont(font_0507, 5, 7, 1, 2);
+		ssd1312_showstr(0, 14, strbuf, str_len);
 
 		// 刷新屏幕
 		ssd1312_sendBuffer();

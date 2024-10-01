@@ -5,6 +5,30 @@ void lis2dw12_init(void) {
 	lis2dw12_writeReg(LIS2DW12_CTRL1, 0x77);  // 使能X、Y、Z轴，ODR=100Hz，连续模式
 }
 
+int16_t lis2dw12_readTemprature(void) {
+	uint8_t low = lis2dw12_readReg(LIS2DW12_OUT_T_L);
+	uint8_t high = lis2dw12_readReg(LIS2DW12_OUT_T_H);
+	return ((high << 8) | low) >> 4;
+}
+int8_t lis2dw12_readTemprature8bit(void) {
+	return lis2dw12_readReg(LIS2DW12_OUT_T);
+}
+
+int16_t lis2dw12_readX(void) {
+	uint8_t low = lis2dw12_readReg(LIS2DW12_OUT_X_L);
+	uint8_t high = lis2dw12_readReg(LIS2DW12_OUT_X_H);
+	return (high << 8) | low;
+}
+int16_t lis2dw12_readY(void) {
+	uint8_t low = lis2dw12_readReg(LIS2DW12_OUT_Y_L);
+	uint8_t high = lis2dw12_readReg(LIS2DW12_OUT_Y_H);
+	return (high << 8) | low;
+}
+int16_t lis2dw12_readZ(void) {
+	uint8_t low = lis2dw12_readReg(LIS2DW12_OUT_Z_L);
+	uint8_t high = lis2dw12_readReg(LIS2DW12_OUT_Z_H);
+	return (high << 8) | low;
+}
 
 void lis2dw12_single_tap_init(void) {
 	lis2dw12_writeReg(LIS2DW12_CTRL6, 0x04);

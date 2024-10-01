@@ -8,17 +8,19 @@ extern "C" {
 #endif
 
 
-#define LIS2DW12_OUT_T_L	 0x0D   // 温度数据寄存器（低8位）
-#define LIS2DW12_OUT_T_H	 0x0E   // 温度数据寄存器（高8位）
+#define LIS2DW12_OUT_T_L     0x0D   // 温度数据寄存器（低8位）
+#define LIS2DW12_OUT_T_H     0x0E   // 温度数据寄存器（高8位）
 
-#define LIS2DW12_WHO_AM_I	 0x0F   // WHO_AM_I 寄存器
+#define LIS2DW12_WHO_AM_I    0x0F   // WHO_AM_I 寄存器
 
-#define LIS2DW12_CTRL1		 0x20   // 控制寄存器1
-#define LIS2DW12_CTRL2		 0x21   // 控制寄存器2
-#define LIS2DW12_CTRL3		 0x22   // 控制寄存器3
-#define LIS2DW12_CTRL4		 0x23   // 控制寄存器4（INT1_PAD_CTRL）
-#define LIS2DW12_CTRL5		 0x24   // 控制寄存器5（INT2_PAD_CTRL）
-#define LIS2DW12_CTRL6		 0x25   // 控制寄存器6
+#define LIS2DW12_CTRL1       0x20   // 控制寄存器1
+#define LIS2DW12_CTRL2       0x21   // 控制寄存器2
+#define LIS2DW12_CTRL3       0x22   // 控制寄存器3
+#define LIS2DW12_CTRL4       0x23   // 控制寄存器4（INT1_PAD_CTRL）
+#define LIS2DW12_CTRL5       0x24   // 控制寄存器5（INT2_PAD_CTRL）
+#define LIS2DW12_CTRL6       0x25   // 控制寄存器6
+
+#define LIS2DW12_OUT_T       0x26   // 温度数据寄存器
 
 #define LIS2DW12_STATUS      0x27   // 状态寄存器
 
@@ -60,6 +62,12 @@ extern "C" {
 
 
 void lis2dw12_init(void);
+int16_t lis2dw12_readTemprature(void);
+int8_t lis2dw12_readTemprature8bit(void);
+
+int16_t lis2dw12_readX(void);
+int16_t lis2dw12_readY(void);
+int16_t lis2dw12_readZ(void);
 
 void lis2dw12_single_tap_init(void);
 void lis2dw12_double_tap_init(void);

@@ -21,6 +21,7 @@ extern const uint8_t char_W[];
 extern const uint8_t char_H[];
 
 extern const unsigned char font_0507 [];
+extern const unsigned char font0608 [];
 
 
 // 8*16

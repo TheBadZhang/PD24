@@ -129,16 +129,32 @@ uint8_t mabs(uint8_t x) {
 	return x;
 }
 
-void ssd1312_drawLine(uint8_t x0, uint8_t y0, uint8_t x1, uint8_t y1, uint8_t t) {
-
-	int16_t dx = mabs(x1 - x0), sx = x0 < x1 ? 1 : -1;
-	int16_t dy = mabs(y1 - y0), sy = y0 < y1 ? 1 : -1;
-	int16_t erro = (dx > dy ? dx : -dy) / 2;
-
-	while(ssd1312_drawPixel(x0, y0, 1), x0 != x1 || y0 != y1){
-		int16_t e2 = erro;
-		if(e2 > -dx) { erro -= dy; x0 += sx;}
-		if(e2 <  dy) { erro += dx; y0 += sy;}
+void ssd1312_drawLine(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, uint8_t t) {
+	int16_t dx = x2 - x1;
+	int16_t dy = y2 - y1;
+	int16_t ux = ((dx > 0) << 1) - 1;
+	int16_t uy = ((dy > 0) << 1) - 1;
+	int16_t x = x1, y = y1, eps = 0;
+	dx = mabs(dx);
+	dy = mabs(dy);
+	if (dx > dy) {
+		for (x = x1; x != x2; x += ux) {
+			ssd1312_drawPixel (x, y, t);
+			eps += dy;
+			if ((2*eps) >= dx) {
+				y += uy;
+				eps -= dx;
+			}
+		}
+	} else {
+		for (y = y1; y != y2; y += uy) {
+			ssd1312_drawPixel (x, y, t);
+			eps += dx;
+			if ((2*eps) >= dy) {
+				x += ux;
+				eps -= dy;
+			}
+		}
 	}
 }
 
@@ -191,6 +207,20 @@ uint8_t isnum(char c) {
 	return (c >= '0' && c <= '9');
 }
 
+const uint8_t* font_data;
+uint8_t font_w;
+uint8_t font_h;
+uint8_t font_spacing_x;
+int8_t font_newline;
+void ssd1312_setFont(const uint8_t* font, uint8_t w, uint8_t h, uint8_t spacing_x, int8_t newline) {
+	font_data = font;
+	font_w = w;
+	font_h = h;
+	font_spacing_x = spacing_x;
+	font_newline = newline;
+}
+
+// 只要在这个地方通过drawpixel优化一下就可以在任意位置输出文字了
 void ssd1312_showchar(uint8_t x, uint8_t y, uint8_t num, const uint8_t* font, uint8_t w, uint8_t h) {
 	h= (h+7)/8;
 	for (uint8_t i = 0; i < w; i++) {
@@ -201,6 +231,7 @@ void ssd1312_showchar(uint8_t x, uint8_t y, uint8_t num, const uint8_t* font, ui
 		}
 	}
 }
+
 /**
  * @brief 字符串绘制函数
  * @param x x坐标
@@ -213,22 +244,23 @@ void ssd1312_showchar(uint8_t x, uint8_t y, uint8_t num, const uint8_t* font, ui
  * @param spacing_x 字符间距
  * @param newline 最大显示行数
  */
-void ssd1312_showstr(short x, short y, const char* str, const uint8_t str_len, const uint8_t* font, uint8_t w, uint8_t h, uint8_t spacing_x, int8_t newline) {
-	uint8_t ww = ((ssd1312_rotation == 0 || ssd1312_rotation == 2)? 64-w : 128-w);
+void ssd1312_showstr(short x, short y, const char* str, const uint8_t str_len) {
+	uint8_t ww = ((ssd1312_rotation == 0 || ssd1312_rotation == 2)? 64-font_w : 128-font_w);
+	uint8_t newline = font_newline;
 	for (uint8_t i = 0; i < str_len; i++) {
 		// if (isnum(str[i]))
-		if (x >= -w && x <= ww) {
-			ssd1312_showchar(x, y, str[i]-' ', font, w, h);
+		if (x >= -font_w && x <= ww) {
+			ssd1312_showchar(x, y, str[i]-' ', font_data, font_w, font_h);
 		}
 		if (x > ww) {
 			if (--newline > 0) {
 					x = x-ww;
-					y += h/8+1;
+					y += font_h/8+1;
 			} else {
 				return;
 			}
 		} else {
-			x += w+spacing_x;
+			x += font_w+font_spacing_x;
 		}
 	}
 }

@@ -30,9 +30,9 @@ void ssd1312_drawXBMP(uint8_t x, uint8_t y, uint8_t* bmp, uint8_t w, uint8_t h);
 
 
 uint8_t isnum(char c);
-
+void ssd1312_setFont(const uint8_t* font, uint8_t w, uint8_t h, uint8_t spacing_x, int8_t newline);
 void ssd1312_showchar(uint8_t x, uint8_t y, uint8_t num, const uint8_t* font, uint8_t w, uint8_t h);
-void ssd1312_showstr(short x, short y, const char* str, const uint8_t str_len, const uint8_t* font, uint8_t w, uint8_t h, uint8_t spacing_x, int8_t newline);
+void ssd1312_showstr(short x, short y, const char* str, const uint8_t str_len);
 
 
 // 用户自定义函数

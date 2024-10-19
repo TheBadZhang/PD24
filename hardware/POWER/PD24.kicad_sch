@@ -3437,17 +3437,6 @@
 		)
 		(uuid "112631c2-bd0d-4fc9-9d58-ceedca82ada0")
 	)
-	(label "SDA"
-		(at 135.89 124.46 0)
-		(fields_autoplaced yes)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "217d1c02-ecb2-43b2-a7d8-82e5894d3de2")
-	)
 	(label "VIN-"
 		(at 181.61 99.06 0)
 		(fields_autoplaced yes)
@@ -3491,17 +3480,6 @@
 			(justify left bottom)
 		)
 		(uuid "9bbbe4ad-0229-454a-bfd5-27f18c6e2454")
-	)
-	(label "SCL"
-		(at 135.89 129.54 0)
-		(fields_autoplaced yes)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "b10bd1d7-9d7f-4ade-b09f-9a907533530b")
 	)
 	(label "VBUS"
 		(at 69.85 77.47 0)
@@ -3798,7 +3776,7 @@
 		(at 160.02 58.42 0)
 		(unit 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
 		(dnp no)
 		(fields_autoplaced yes)
@@ -4029,7 +4007,7 @@
 		(at 163.83 69.85 0)
 		(unit 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
 		(dnp no)
 		(fields_autoplaced yes)
@@ -4443,7 +4421,7 @@
 		(at 152.4 66.04 0)
 		(unit 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
 		(dnp no)
 		(fields_autoplaced yes)

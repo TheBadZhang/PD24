@@ -4312,7 +4312,7 @@
 		(descr "Capacitor SMD 0402 (1005 Metric), square (rectangular) end terminal, IPC_7351 nominal, (Body size source: IPC-SM-782 page 76, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf), generated with kicad-footprint-generator")
 		(tags "capacitor")
 		(property "Reference" "C6"
-			(at 0 1.16 360)
+			(at 0 1.16 0)
 			(layer "B.SilkS")
 			(hide yes)
 			(uuid "82e9fab4-ee6c-4dcc-b04c-8afe6176fcba")
@@ -4325,7 +4325,7 @@
 			)
 		)
 		(property "Value" "0.1uF"
-			(at 0 -1.16 360)
+			(at 0 -1.16 0)
 			(layer "B.Fab")
 			(uuid "84b7f077-7095-431b-a588-f8e11f348f09")
 			(effects
@@ -4540,7 +4540,7 @@
 			(uuid "145c7846-42b8-423a-89a7-867cd47c6095")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 0 0 360)
+			(at 0 0 0)
 			(layer "B.Fab")
 			(uuid "17d3ecd9-dc5f-4b8b-93fd-4be9d1deb42c")
 			(effects
@@ -5416,7 +5416,7 @@
 		(descr "Capacitor SMD 0402 (1005 Metric), square (rectangular) end terminal, IPC_7351 nominal, (Body size source: IPC-SM-782 page 76, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf), generated with kicad-footprint-generator")
 		(tags "capacitor")
 		(property "Reference" "C14"
-			(at 0 1.16 360)
+			(at 0 1.16 0)
 			(layer "B.SilkS")
 			(hide yes)
 			(uuid "d999296b-25ec-4bb7-b08c-caa9d3365c9f")
@@ -5429,7 +5429,7 @@
 			)
 		)
 		(property "Value" "0.1uF"
-			(at 0 -1.16 360)
+			(at 0 -1.16 0)
 			(layer "B.Fab")
 			(uuid "aa923a77-0c9f-48d7-a5b8-5cf02ef35202")
 			(effects
@@ -5644,7 +5644,7 @@
 			(uuid "8d955a37-b72d-40c7-9b0c-a4b6d4b6ecd2")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 0 0 360)
+			(at 0 0 0)
 			(layer "B.Fab")
 			(uuid "b8be7919-4529-4029-8f7d-00a6bcdaed67")
 			(effects
@@ -6232,175 +6232,6 @@
 		)
 		(model "${KICAD8_3DMODEL_DIR}/Connector_PinSocket_1.27mm.3dshapes/PinSocket_1x08_P1.27mm_Vertical.wrl"
 			(hide yes)
-			(offset
-				(xyz 0 0 0)
-			)
-			(scale
-				(xyz 1 1 1)
-			)
-			(rotate
-				(xyz 0 0 0)
-			)
-		)
-	)
-	(footprint "my_footprint:KEY-SMD_3P-L4.3-W3.05"
-		(layer "B.Cu")
-		(uuid "dcea8d89-6cb1-41db-bd2d-5d2db01ea52e")
-		(at 154.7 108.45 180)
-		(property "Reference" "REF**"
-			(at 0 10.39 0)
-			(unlocked yes)
-			(layer "B.SilkS")
-			(uuid "7c0ce27d-e954-4b57-9a70-35e02acfa8c1")
-			(effects
-				(font
-					(size 1 1)
-					(thickness 0.15)
-				)
-				(justify mirror)
-			)
-		)
-		(property "Value" "KEY-SMD_3P-L4.3-W3.05"
-			(at 0 8.89 0)
-			(unlocked yes)
-			(layer "B.Fab")
-			(uuid "bf3e4240-e4d5-43f7-aa80-b20848bc4993")
-			(effects
-				(font
-					(size 1 1)
-					(thickness 0.15)
-				)
-				(justify mirror)
-			)
-		)
-		(property "Footprint" "my_footprint:KEY-SMD_3P-L4.3-W3.05"
-			(at 0 9.89 0)
-			(unlocked yes)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "5842abea-1b46-4164-a514-b5c92015bfa5")
-			(effects
-				(font
-					(size 1 1)
-					(thickness 0.15)
-				)
-				(justify mirror)
-			)
-		)
-		(property "Datasheet" ""
-			(at 0 9.89 0)
-			(unlocked yes)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "51634b58-cf97-4eed-8442-3b3f0f19ad79")
-			(effects
-				(font
-					(size 1 1)
-					(thickness 0.15)
-				)
-				(justify mirror)
-			)
-		)
-		(property "Description" ""
-			(at 0 9.89 0)
-			(unlocked yes)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "0192d75a-cb54-4921-85d8-1bf599471426")
-			(effects
-				(font
-					(size 1 1)
-					(thickness 0.15)
-				)
-				(justify mirror)
-			)
-		)
-		(attr smd)
-		(fp_rect
-			(start -2.159 2.54)
-			(end 2.159 -0.508)
-			(stroke
-				(width 0.12)
-				(type default)
-			)
-			(fill none)
-			(layer "B.SilkS")
-			(uuid "ed09f43a-8e6c-4fb1-99ef-a1d02dfb8845")
-		)
-		(fp_text user "${REFERENCE}"
-			(at 0 7.39 0)
-			(unlocked yes)
-			(layer "B.Fab")
-			(uuid "324c7b30-2174-4d9b-a68f-a12ed1b62dac")
-			(effects
-				(font
-					(size 1 1)
-					(thickness 0.15)
-				)
-				(justify mirror)
-			)
-		)
-		(pad "1" smd roundrect
-			(at -1.27 0 180)
-			(size 0.9 1.7)
-			(layers "B.Cu" "B.Paste" "B.Mask")
-			(roundrect_rratio 0.25)
-			(thermal_bridge_angle 45)
-			(uuid "298348e8-0860-4bbf-b4c0-6bd3e49a6a52")
-		)
-		(pad "2" smd roundrect
-			(at 0 0 180)
-			(size 0.9 1.7)
-			(layers "B.Cu" "B.Paste" "B.Mask")
-			(roundrect_rratio 0.25)
-			(thermal_bridge_angle 45)
-			(uuid "e4c14474-1d52-4403-bb1a-0da40918beda")
-		)
-		(pad "3" smd roundrect
-			(at 1.27 0 180)
-			(size 0.9 1.7)
-			(layers "B.Cu" "B.Paste" "B.Mask")
-			(roundrect_rratio 0.25)
-			(thermal_bridge_angle 45)
-			(uuid "99cbb577-65ae-4fd1-97dd-13334d3cd649")
-		)
-		(pad "4" smd roundrect
-			(at -1.905 2.032 180)
-			(size 1.2 0.6)
-			(layers "B.Cu" "B.Paste" "B.Mask")
-			(roundrect_rratio 0.25)
-			(thermal_bridge_angle 45)
-			(uuid "d8263664-141d-4e28-b80d-f7a74da2a772")
-		)
-		(pad "5" smd roundrect
-			(at 1.905 2.032 180)
-			(size 1.2 0.6)
-			(layers "B.Cu" "B.Paste" "B.Mask")
-			(roundrect_rratio 0.25)
-			(thermal_bridge_angle 45)
-			(uuid "0aca7737-fa39-443a-9885-453a0b3686b6")
-		)
-		(pad "GND" thru_hole roundrect
-			(at -2.159 1.016 180)
-			(size 0.6 1.1)
-			(drill oval 0.4 0.9)
-			(layers "*.Cu" "*.Mask")
-			(remove_unused_layers no)
-			(roundrect_rratio 0.25)
-			(thermal_bridge_angle 45)
-			(uuid "bb79e8dd-297a-40c8-9493-e8daf862d445")
-		)
-		(pad "GND" thru_hole roundrect
-			(at 2.159 1.016 180)
-			(size 0.6 1.1)
-			(drill oval 0.4 0.9)
-			(layers "*.Cu" "*.Mask")
-			(remove_unused_layers no)
-			(roundrect_rratio 0.25)
-			(thermal_bridge_angle 45)
-			(uuid "908e8fdd-bf17-4022-83f9-23aa4948d469")
-		)
-		(model "${KICAD_USER_LIB}/model/按键、摇杆/侧按键.STEP"
 			(offset
 				(xyz 0 0 0)
 			)

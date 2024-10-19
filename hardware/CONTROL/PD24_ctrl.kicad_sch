@@ -3304,17 +3304,6 @@
 		)
 		(uuid "6f139890-6272-445d-91e2-a59d83c70cb6")
 	)
-	(label "SWCLK"
-		(at 135.89 176.53 0)
-		(fields_autoplaced yes)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "7aa18bf3-2048-4f78-9ab1-d25b77bd43ae")
-	)
 	(label "I2C2.SCL"
 		(at 39.37 48.26 0)
 		(fields_autoplaced yes)
@@ -3337,7 +3326,7 @@
 		)
 		(uuid "8b0a1e65-6573-4b8c-9332-cd630d4c8e3c")
 	)
-	(label "SWDIO"
+	(label "SWCLK"
 		(at 135.89 173.99 0)
 		(fields_autoplaced yes)
 		(effects
@@ -3346,7 +3335,18 @@
 			)
 			(justify left bottom)
 		)
-		(uuid "8f78e53c-d9ea-44ec-b13c-81b4a64a274a")
+		(uuid "b1633efe-5643-468a-8d2c-4a0e0b4c2be6")
+	)
+	(label "SWDIO"
+		(at 135.89 176.53 0)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "d9c833ef-c307-4069-8cd4-077c04781692")
 	)
 	(label "VIN-"
 		(at 154.94 52.07 180)

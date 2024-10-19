@@ -932,7 +932,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
 			(at 102.5652 106.68 0)
 			(effects
 				(font
@@ -1149,7 +1149,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "ce7ef3ed-2117-40af-a91d-95b362b45417")
-		(property "Reference" "R1"
+		(property "Reference" "R2"
 			(at 104.14 83.8199 0)
 			(effects
 				(font
@@ -1167,7 +1167,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 99.822 85.09 90)
 			(effects
 				(font
@@ -1203,7 +1203,7 @@
 		(instances
 			(project "PD24"
 				(path "/10096dd5-e34a-417b-937d-8bf7da4f4410/57b1b606-b677-42d1-83e9-4545144c6d1c"
-					(reference "R1")
+					(reference "R2")
 					(unit 1)
 				)
 			)
@@ -1214,12 +1214,12 @@
 		(at 168.91 106.68 0)
 		(unit 1)
 		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
+		(in_bom no)
+		(on_board no)
+		(dnp yes)
 		(fields_autoplaced yes)
 		(uuid "e5c16ec2-5aa9-4562-935c-f04ae877c369")
-		(property "Reference" "R7"
+		(property "Reference" "R3"
 			(at 171.45 105.4099 0)
 			(effects
 				(font
@@ -1273,7 +1273,7 @@
 		(instances
 			(project "PD24"
 				(path "/10096dd5-e34a-417b-937d-8bf7da4f4410/57b1b606-b677-42d1-83e9-4545144c6d1c"
-					(reference "R7")
+					(reference "R3")
 					(unit 1)
 				)
 			)

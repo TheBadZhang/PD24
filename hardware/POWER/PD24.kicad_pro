@@ -68,7 +68,7 @@
         "connection_width": "warning",
         "copper_edge_clearance": "error",
         "copper_sliver": "warning",
-        "courtyards_overlap": "warning",
+        "courtyards_overlap": "ignore",
         "diff_pair_gap_out_of_range": "error",
         "diff_pair_uncoupled_length_too_long": "error",
         "drill_out_of_range": "error",
@@ -96,7 +96,7 @@
         "padstack": "warning",
         "pth_inside_courtyard": "ignore",
         "shorting_items": "error",
-        "silk_edge_clearance": "warning",
+        "silk_edge_clearance": "ignore",
         "silk_over_copper": "warning",
         "silk_overlap": "warning",
         "skew_out_of_range": "error",
@@ -180,7 +180,9 @@
       "track_widths": [
         0.0,
         0.15,
-        0.2
+        0.2,
+        0.3,
+        0.5
       ],
       "tuning_pattern_settings": {
         "diff_pair_defaults": {
@@ -457,7 +459,7 @@
     "classes": [
       {
         "bus_width": 12,
-        "clearance": 0.15,
+        "clearance": 0.12,
         "diff_pair_gap": 0.25,
         "diff_pair_via_gap": 0.25,
         "diff_pair_width": 0.2,
@@ -615,8 +617,16 @@
       "HUSB238"
     ],
     [
-      "6ea65a9c-8aae-4995-af10-024c1924c461",
-      "SY7304-24v"
+      "96cd3fab-a554-4237-b887-b9ac3e3c730c",
+      "LIS2DW12"
+    ],
+    [
+      "676e4b61-3834-4e26-91aa-fdfd76d79b91",
+      "TPS43060-24V"
+    ],
+    [
+      "9a9716b3-b489-46d6-8b46-e0683fb5829a",
+      "TPS709-3v3"
     ]
   ],
   "text_variables": {}

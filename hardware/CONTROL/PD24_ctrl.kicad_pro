@@ -464,7 +464,7 @@
     "classes": [
       {
         "bus_width": 12,
-        "clearance": 0.2,
+        "clearance": 0.1,
         "diff_pair_gap": 0.25,
         "diff_pair_via_gap": 0.25,
         "diff_pair_width": 0.2,
@@ -474,7 +474,7 @@
         "name": "Default",
         "pcb_color": "rgba(0, 0, 0, 0.000)",
         "schematic_color": "rgba(0, 0, 0, 0.000)",
-        "track_width": 0.2,
+        "track_width": 0.15,
         "via_diameter": 0.6,
         "via_drill": 0.3,
         "wire_width": 6
@@ -606,16 +606,8 @@
       "根目录"
     ],
     [
-      "ff225513-abd4-43c7-92b1-d969635b1ad8",
-      "TPS54202-3v3"
-    ],
-    [
       "fa289eff-14f6-4d53-b21c-9d76eea67eaf",
       "ssd1312"
-    ],
-    [
-      "604d0f60-3c73-4079-a9e3-6183d823b97d",
-      "lis2dw12"
     ]
   ],
   "text_variables": {}

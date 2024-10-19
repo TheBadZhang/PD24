@@ -2585,6 +2585,16 @@
 	)
 	(wire
 		(pts
+			(xy 200.66 116.84) (xy 200.66 121.92)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "2b04bf11-a2bf-4241-b90f-a6b6fb82266f")
+	)
+	(wire
+		(pts
 			(xy 144.78 83.82) (xy 147.32 83.82)
 		)
 		(stroke
@@ -3603,6 +3613,72 @@
 		)
 	)
 	(symbol
+		(lib_id "power:GND")
+		(at 200.66 121.92 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "6efdd40a-2ab9-4263-bc2b-627958dfd7ed")
+		(property "Reference" "#PWR05"
+			(at 200.66 128.27 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 200.66 127 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 200.66 121.92 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 200.66 121.92 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 200.66 121.92 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "f1e366fd-ae15-4674-89c0-214673d9ac4e")
+		)
+		(instances
+			(project "PD24"
+				(path "/10096dd5-e34a-417b-937d-8bf7da4f4410"
+					(reference "#PWR05")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "power:+3V3")
 		(at 214.63 81.28 0)
 		(unit 1)
@@ -4223,8 +4299,8 @@
 		(fill
 			(color 0 0 0 0.0000)
 		)
-		(uuid "9106ccc8-1bdb-4b4f-b5f0-ff5c3bfc13f8")
-		(property "Sheetname" "MT3608-24V"
+		(uuid "6ea65a9c-8aae-4995-af10-024c1924c461")
+		(property "Sheetname" "SY7304-24v"
 			(at 190.5 74.2184 0)
 			(effects
 				(font
@@ -4233,7 +4309,7 @@
 				(justify left bottom)
 			)
 		)
-		(property "Sheetfile" "mt3608-24v.kicad_sch"
+		(property "Sheetfile" "sy7304-24v.kicad_sch"
 			(at 190.5 111.0746 0)
 			(effects
 				(font
@@ -4241,16 +4317,6 @@
 				)
 				(justify left top)
 			)
-		)
-		(pin "GND" input
-			(at 200.66 110.49 270)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-			(uuid "b8485105-fab1-48fb-a329-189f863d761a")
 		)
 		(pin "VIN" input
 			(at 190.5 83.82 180)
@@ -4260,7 +4326,17 @@
 				)
 				(justify left)
 			)
-			(uuid "565ed52e-7c8b-4b3f-8b9d-1913ef98302f")
+			(uuid "45b41334-2a6d-40da-b24e-739594e475fe")
+		)
+		(pin "GND" input
+			(at 200.66 110.49 270)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+			(uuid "2626ba82-07c4-4274-b775-627ebf78267f")
 		)
 		(pin "VOUT" input
 			(at 209.55 83.82 0)
@@ -4270,7 +4346,7 @@
 				)
 				(justify right)
 			)
-			(uuid "4c50b919-2468-417f-bd09-bd3b36be035e")
+			(uuid "0100002b-bc70-4cc5-a2ed-943f785fb5fc")
 		)
 		(instances
 			(project "PD24"

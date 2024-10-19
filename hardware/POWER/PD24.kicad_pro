@@ -178,7 +178,9 @@
         }
       ],
       "track_widths": [
-        0.0
+        0.0,
+        0.15,
+        0.2
       ],
       "tuning_pattern_settings": {
         "diff_pair_defaults": {
@@ -455,7 +457,7 @@
     "classes": [
       {
         "bus_width": 12,
-        "clearance": 0.2,
+        "clearance": 0.15,
         "diff_pair_gap": 0.25,
         "diff_pair_via_gap": 0.25,
         "diff_pair_width": 0.2,
@@ -465,8 +467,8 @@
         "name": "Default",
         "pcb_color": "rgba(0, 0, 0, 0.000)",
         "schematic_color": "rgba(0, 0, 0, 0.000)",
-        "track_width": 0.2,
-        "via_diameter": 0.6,
+        "track_width": 0.15,
+        "via_diameter": 0.5,
         "via_drill": 0.3,
         "wire_width": 6
       }
@@ -494,6 +496,7 @@
   },
   "schematic": {
     "annotate_start_num": 0,
+    "bom_export_filename": "",
     "bom_fmt_presets": [],
     "bom_fmt_settings": {
       "field_delimiter": ",",
@@ -612,8 +615,8 @@
       "HUSB238"
     ],
     [
-      "9106ccc8-1bdb-4b4f-b5f0-ff5c3bfc13f8",
-      "MT3608-24V"
+      "6ea65a9c-8aae-4995-af10-024c1924c461",
+      "SY7304-24v"
     ]
   ],
   "text_variables": {}

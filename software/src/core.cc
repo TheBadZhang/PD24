@@ -560,11 +560,11 @@ void core(void) {
 	lis2dw12_double_tap_init();
 
 	// 判断 lis2dw12 能否正常通信
-	rx = lis2dw12_readReg(LIS2DW12_WHO_AM_I);
-	while (rx != 0x44) {
-		rx = lis2dw12_readReg(LIS2DW12_WHO_AM_I);
-		HAL_Delay(10);
-	}
+	// rx = lis2dw12_readReg(LIS2DW12_WHO_AM_I);
+	// while (rx != 0x44) {
+	// 	rx = lis2dw12_readReg(LIS2DW12_WHO_AM_I);
+	// 	HAL_Delay(10);
+	// }
 
 	husb238_writeReg(HUSB238_GO_COMMAND, HUSB238_COMMAND_GET_SRC_CAP);
 	uint8_t voltage_select = 5;
@@ -572,7 +572,8 @@ void core(void) {
 	while (1) {
 
 		// 读取加速度计数据旋转屏幕显示方向
-		ssd1312_setRotation(lis2dw12_orientation());
+		// ssd1312_setRotation(lis2dw12_orientation());
+		ssd1312_setRotation(0);
 		// 读取加速度计数据，判断是否存在双击事件，存在则清空功率累计
 		if (lis2dw12_readReg(LIS2DW12_TAP_SRC) & 0x10) {
 			power_sum = 0;

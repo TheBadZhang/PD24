@@ -15,3 +15,10 @@ software/.mxproject
 software/Makefile
 software/startup_stm32g031xx.s
 software/STM32G031G8Ux_FLASH.ld
+software/STM32G031XX_FLASH.ld
+
+*.wrl
+*.step
+*.round-tracks-config
+fabrication-toolkit-options.json
+*.kicad_prl

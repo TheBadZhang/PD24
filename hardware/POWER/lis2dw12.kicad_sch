@@ -1,12 +1,14 @@
 (kicad_sch
-	(version 20231120)
+	(version 20250114)
 	(generator "eeschema")
-	(generator_version "8.0")
+	(generator_version "9.0")
 	(uuid "d8dfd156-3093-4dd2-bbbb-9b3a79716076")
 	(paper "A4")
 	(lib_symbols
 		(symbol "Device:C"
-			(pin_numbers hide)
+			(pin_numbers
+				(hide yes)
+			)
 			(pin_names
 				(offset 0.254)
 			)
@@ -79,7 +81,7 @@
 			(symbol "C_0_1"
 				(polyline
 					(pts
-						(xy -2.032 -0.762) (xy 2.032 -0.762)
+						(xy -2.032 0.762) (xy 2.032 0.762)
 					)
 					(stroke
 						(width 0.508)
@@ -91,7 +93,7 @@
 				)
 				(polyline
 					(pts
-						(xy -2.032 0.762) (xy 2.032 0.762)
+						(xy -2.032 -0.762) (xy 2.032 -0.762)
 					)
 					(stroke
 						(width 0.508)
@@ -140,6 +142,7 @@
 					)
 				)
 			)
+			(embedded_fonts no)
 		)
 		(symbol "my_chips:LIS2DW12"
 			(exclude_from_sim no)
@@ -203,78 +206,6 @@
 			)
 			(symbol "LIS2DW12_1_1"
 				(pin input line
-					(at -11.43 -1.27 0)
-					(length 2.54)
-					(name "SCL/SPC"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin power_in line
-					(at 1.27 13.97 270)
-					(length 2.54)
-					(name "Vdd_IO"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "10"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin output line
-					(at 11.43 1.27 180)
-					(length 2.54)
-					(name "INT2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "11"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin output line
-					(at 11.43 3.81 180)
-					(length 2.54)
-					(name "INT1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "12"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin input line
 					(at -11.43 6.35 0)
 					(length 2.54)
 					(name "~{CS}"
@@ -285,6 +216,24 @@
 						)
 					)
 					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin bidirectional line
+					(at -11.43 3.81 0)
+					(length 2.54)
+					(name "SDA/SDI"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "4"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -310,17 +259,17 @@
 						)
 					)
 				)
-				(pin bidirectional line
-					(at -11.43 3.81 0)
+				(pin input line
+					(at -11.43 -1.27 0)
 					(length 2.54)
-					(name "SDA/SDI"
+					(name "SCL/SPC"
 						(effects
 							(font
 								(size 1.27 1.27)
 							)
 						)
 					)
-					(number "4"
+					(number "1"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -347,6 +296,24 @@
 					)
 				)
 				(pin power_in line
+					(at -1.27 13.97 270)
+					(length 2.54)
+					(name "Vdd"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "9"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin power_in line
 					(at 0 -11.43 90)
 					(length 2.54)
 					(name "GND"
@@ -357,6 +324,79 @@
 						)
 					)
 					(number "6"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 -11.43 90)
+					(length 2.54)
+					(hide yes)
+					(name "GND"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "8"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin power_in line
+					(at 1.27 13.97 270)
+					(length 2.54)
+					(name "Vdd_IO"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "10"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin output line
+					(at 11.43 3.81 180)
+					(length 2.54)
+					(name "INT1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "12"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin output line
+					(at 11.43 1.27 180)
+					(length 2.54)
+					(name "INT2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "11"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -382,44 +422,25 @@
 						)
 					)
 				)
-				(pin passive line
-					(at 0 -11.43 90)
-					(length 2.54) hide
-					(name "GND"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "8"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin power_in line
-					(at -1.27 13.97 270)
-					(length 2.54)
-					(name "Vdd"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "9"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
+			)
+			(embedded_fonts no)
+		)
+	)
+	(text "CS 拉低为 SPI 模式"
+		(exclude_from_sim no)
+		(at 121.666 89.154 0)
+		(effects
+			(font
+				(size 1.27 1.27)
 			)
 		)
+		(uuid "20980b75-de8a-4ff7-b9ea-c661b00b05fc")
+	)
+	(junction
+		(at 127 82.55)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "0103ba62-0a78-48f6-9e21-f697a9ce8de4")
 	)
 	(junction
 		(at 116.84 111.76)
@@ -432,12 +453,6 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "222fc6dd-fdfa-407b-a7f9-475607730c80")
-	)
-	(junction
-		(at 116.84 97.79)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "41514bcc-250f-447c-a8b9-3b6613ef929b")
 	)
 	(junction
 		(at 139.7 82.55)
@@ -469,7 +484,7 @@
 	)
 	(wire
 		(pts
-			(xy 109.22 82.55) (xy 139.7 82.55)
+			(xy 109.22 82.55) (xy 127 82.55)
 		)
 		(stroke
 			(width 0)
@@ -529,16 +544,6 @@
 	)
 	(wire
 		(pts
-			(xy 116.84 92.71) (xy 129.54 92.71)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "4e9791d2-c5ff-47f7-b9f5-f1854eb47d41")
-	)
-	(wire
-		(pts
 			(xy 139.7 82.55) (xy 139.7 85.09)
 		)
 		(stroke
@@ -546,6 +551,16 @@
 			(type default)
 		)
 		(uuid "53ae4bc6-5dc1-4bd0-b97f-60ccc4e33c37")
+	)
+	(wire
+		(pts
+			(xy 129.54 92.71) (xy 127 92.71)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5fe4e202-f314-4a39-9e66-e0831df60763")
 	)
 	(wire
 		(pts
@@ -609,6 +624,16 @@
 	)
 	(wire
 		(pts
+			(xy 127 82.55) (xy 139.7 82.55)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b5cc33ed-80f4-4904-8fbd-d0ee10744274")
+	)
+	(wire
+		(pts
 			(xy 152.4 95.25) (xy 157.48 95.25)
 		)
 		(stroke
@@ -629,16 +654,6 @@
 	)
 	(wire
 		(pts
-			(xy 116.84 92.71) (xy 116.84 97.79)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "d01fcbe9-8b3c-4228-abd8-118953e234c3")
-	)
-	(wire
-		(pts
 			(xy 127 95.25) (xy 129.54 95.25)
 		)
 		(stroke
@@ -646,6 +661,16 @@
 			(type default)
 		)
 		(uuid "da9c12dd-8e43-47d6-823c-a326233af971")
+	)
+	(wire
+		(pts
+			(xy 127 92.71) (xy 127 82.55)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e0f23632-7def-40a4-acee-256d36048acd")
 	)
 	(wire
 		(pts
@@ -677,20 +702,9 @@
 		)
 		(uuid "fac55c3e-7260-4d70-ae84-37acf5551bab")
 	)
-	(text "CS 拉低为 SPI 模式"
-		(exclude_from_sim no)
-		(at 121.666 89.154 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-		)
-		(uuid "20980b75-de8a-4ff7-b9ea-c661b00b05fc")
-	)
 	(hierarchical_label "VCC"
 		(shape input)
 		(at 95.25 82.55 180)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -702,7 +716,6 @@
 	(hierarchical_label "INT1"
 		(shape input)
 		(at 157.48 95.25 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -714,7 +727,6 @@
 	(hierarchical_label "SDA"
 		(shape input)
 		(at 127 95.25 180)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -726,7 +738,6 @@
 	(hierarchical_label "INT2"
 		(shape input)
 		(at 157.48 97.79 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -738,7 +749,6 @@
 	(hierarchical_label "GND"
 		(shape input)
 		(at 95.25 111.76 180)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -750,7 +760,6 @@
 	(hierarchical_label "SCL"
 		(shape input)
 		(at 127 100.33 180)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
